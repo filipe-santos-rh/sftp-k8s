@@ -19,13 +19,16 @@
 `oc whoami -t`  
 
 ### Retrieve the exposed route for you internal registry  
-`oc get route -A | grep regis`  
+`HOST=$(oc get route default-route -n openshift-image-registry --template='{{ .spec.host }}')`  
 
 ### Login to the registry  
-`podman login -u'<Username>' -p=<Token> default-route-openshift-image-registry.apps.<ClusterName>.<Domain>.com`  
+`podman login -u'<Username>' -p=<Token> $HOST`  
 
-### Push the image to the Registry  
-`podman tag localhost/sftp:latest default-route-openshift-image-registry.apps.<ClusterName>.<Domain>.com/sftp/sftp:latest`  
+### TAG the image to the registry  
+`podman tag localhost/sftp:latest $HOST/sftp/sftp:latest`  
+
+### Push the image to the registry  
+`podman push $HOST/sftp/sftp:latest`
 
 ### Deploy the sftp application and service  
 `oc create -f pod-svc.yaml`  
