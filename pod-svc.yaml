@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sftp
+  namespace: sftp
+  labels:
+    run: sftp
+spec:
+  containers:
+    - name: sftp
+      image: image-registry.openshift-image-registry.svc:5000/sftp/sftp:v1
+      env:
+        - name: AUTHORIZED_KEYS_DIR 
+          value: /etc/config
+        - name: SSH_HOST_RSA_KEY
+          value: /etc/ssh/ssh_host_rsa_key/id_rsa
+      volumeMounts:
+      - name: config-volume
+        mountPath: /etc/config
+      - name: hostkey-volume
+        mountPath: /etc/ssh/ssh_host_rsa_key
+  volumes:
+    - name: config-volume
+      configMap:
+        name: authorizedkeys
+    - name: hostkey-volume
+      configMap:
+        name: hostkey
+  restartPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sftp-svc
+  namespace: sftp
+  labels:
+    run: sftp
+spec:
+  ports:
+  - port: 2222
+    protocol: TCP
+  selector:
+    run: sftp

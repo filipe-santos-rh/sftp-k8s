@@ -1,0 +1,6 @@
+#!/bin/bash
+
+if [ -d "$1" ]
+then
+  find $1 -type f | xargs cat | sort | uniq
+fi
