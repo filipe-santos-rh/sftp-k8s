@@ -37,7 +37,7 @@
 
 The user that is being created within the script is `sre-user`.  
 
-Here is an example of how to establish a connexion:
+Here is an example of how to establish a connexion:  
 `sftp -i /Path/To/Private/Key -P 2222 sre-user@sftp-svc`
 
 If you must access the service from the outside world, you will need to create a NodePort or LoadBalancer Type service.  
