@@ -8,7 +8,7 @@ metadata:
 spec:
   containers:
     - name: sftp
-      image: image-registry.openshift-image-registry.svc:5000/sftp/sftp:v1
+      image: image-registry.openshift-image-registry.svc:5000/sftp/sftp:latest
       env:
         - name: AUTHORIZED_KEYS_DIR 
           value: /etc/config
