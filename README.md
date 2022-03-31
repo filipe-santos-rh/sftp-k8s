@@ -32,3 +32,36 @@
 
 ### Deploy the sftp application and service  
 `oc create -f pod-svc.yaml`  
+
+## How to connect to the service
+
+The user that is being created within the script is `sre-user`.  
+
+Here is an example of how to establish a connexion:
+`sftp -i /Path/To/Private/Key -P 2222 sre-user@sftp-svc`
+
+If you must access the service from the outside world, you will need to create a NodePort or LoadBalancer Type service.  
+
+Here is an example of LoadBalancer Port:  
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: sftp-lb
+  namespace: sftp
+spec:
+  ports:
+  - name: sftp
+    port: 2222SV
+  loadBalancerIP:
+  type: LoadBalancer 
+  selector:
+    run: sftp
+```
+
+Once the service is create, retrieve the External-IP:  
+`SVC=$(oc get svc sftp-lb | awk {'print $4'} | grep -v EXTERNAL-IP)`
+
+To connect:  
+`sftp -i /Path/To/Private/Key -P 2222 sre-user@$SVC`
+
