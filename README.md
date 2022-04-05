@@ -52,7 +52,7 @@ metadata:
 spec:
   ports:
   - name: sftp
-    port: 2222SV
+    port: 2222
   loadBalancerIP:
   type: LoadBalancer 
   selector:
